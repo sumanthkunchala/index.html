@@ -6,16 +6,8 @@
   <title>Cabi Invitation Studio</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* Soft blush fabric background: gentle cross-weave on a blush base */
-    body {
-      background:
-        repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.7) 0 2px, rgba(255, 255, 255, 0) 2px 10px),
-        repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.6) 0 1px, rgba(255, 255, 255, 0) 1px 9px),
-        radial-gradient(1200px 800px at 20% -10%, #ffe8f0, transparent 60%),
-        radial-gradient(1200px 800px at 120% 20%, #ffeef6, transparent 60%),
-        #fff6f9; /* blush base */
-      background-attachment: fixed;
-    }
+    /* Pure white background, no designs */
+    body { background: #ffffff; }
 
     /* Spacious white cards */
     .card {
@@ -25,13 +17,10 @@
       box-shadow: 0 10px 36px rgba(17, 24, 39, 0.08);
     }
 
-    /* Delicate stitch frame */
-    .stitch {
-      border: 2px dashed #f3e2ea;
-      border-radius: 22px;
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
     }
 
-    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
     .field {
       background: #fff;
       font-size: 1.05rem;         /* bigger text */
@@ -40,11 +29,12 @@
       border-radius: 0.75rem;
       border: 1px solid #e5e7eb;
       box-shadow: 0 1px 0 rgba(17,24,39,0.02) inset;
+      width: 100%;
     }
     .field:focus {
       outline: none;
-      border-color: #4f46e5;
-      box-shadow: 0 0 0 3px rgba(79,70,229,0.15);
+      border-color: #0f172a;      /* slate-900 */
+      box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.12);
     }
   </style>
 </head>
@@ -67,85 +57,83 @@
   </header>
 
   <main class="max-w-6xl mx-auto px-4 md:px-8 pb-20">
-    <div class="stitch p-5 md:p-8">
-      <div class="grid lg:grid-cols-2 gap-8">
-        <!-- Form -->
-        <section class="card p-8">
-          <h2 class="text-xl font-semibold mb-6">Details</h2>
-          <form id="inviteForm" class="space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-              <label class="block">
-                <span class="text-sm text-slate-700">Customer Name</span>
-                <input name="name" required class="field w-full mt-2" placeholder="Jamie"/>
-              </label>
-              <label class="block">
-                <span class="text-sm text-slate-700">Event</span>
-                <input name="event" required class="field w-full mt-2" placeholder="Summer Try-On"/>
-              </label>
-            </div>
-
-            <!-- ONE field each: type or choose (datalist) -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-              <label class="block">
-                <span class="text-sm text-slate-700">Tone (type or choose)</span>
-                <input name="tone" list="toneList" class="field w-full mt-2" placeholder="Warm & Polished"/>
-                <datalist id="toneList">
-                  <option value="Warm & Polished"></option>
-                  <option value="Playful & Fun"></option>
-                  <option value="Elevated & Elegant"></option>
-                  <option value="Casual & Friendly"></option>
-                  <option value="Luxe Concierge"></option>
-                  <option value="Minimal & Modern"></option>
-                  <option value="Bold & Joyful"></option>
-                  <option value="Romantic & Chic"></option>
-                  <option value="Laid-Back & Conversational"></option>
-                  <option value="VIP Personal Stylist"></option>
-                </datalist>
-              </label>
-
-              <label class="block">
-                <span class="text-sm text-slate-700">Collection (type or choose)</span>
-                <input name="collection" list="collectionList" class="field w-full mt-2" placeholder="Summer Edit"/>
-                <datalist id="collectionList">
-                  <option value="Spring Edit"></option>
-                  <option value="Summer Edit"></option>
-                  <option value="Fall Edit"></option>
-                  <option value="Holiday Edit"></option>
-                  <option value="Just In"></option>
-                  <option value="Everyday Essentials"></option>
-                </datalist>
-              </label>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-              <label class="block">
-                <span class="text-sm text-slate-700">Stylist Name</span>
-                <input name="stylist" class="field w-full mt-2" placeholder="Your Cabi Stylist"/>
-              </label>
-              <label class="block">
-                <span class="text-sm text-slate-700">Style Interests (optional)</span>
-                <input name="style_interest" class="field w-full mt-2" placeholder="versatile pieces, polished essentials, week-to-weekend ease"/>
-              </label>
-            </div>
-
-            <button class="w-full mt-2 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white text-lg font-medium px-5 py-4 transition">
-              Generate Invitation
-            </button>
-          </form>
-        </section>
-
-        <!-- Output -->
-        <section class="card p-8">
-          <h2 class="text-xl font-semibold mb-6">Result</h2>
-          <div id="status" class="text-sm text-slate-600 mb-3">Fill the form and click Generate.</div>
-          <pre id="output" class="mono whitespace-pre-wrap bg-slate-50 rounded-xl p-5 min-h-[360px] ring-1 ring-slate-200 text-[0.98rem]"></pre>
-          <div class="flex flex-wrap gap-4 mt-5">
-            <button id="copyAll" class="rounded-xl bg-white hover:bg-slate-50 px-5 py-2.5 ring-1 ring-slate-200">Copy All</button>
-            <button id="copySubject" class="rounded-xl bg-white hover:bg-slate-50 px-5 py-2.5 ring-1 ring-slate-200">Copy Subject</button>
-            <button id="copyBody" class="rounded-xl bg-white hover:bg-slate-50 px-5 py-2.5 ring-1 ring-slate-200">Copy Body</button>
+    <div class="grid lg:grid-cols-2 gap-8">
+      <!-- Form -->
+      <section class="card p-8">
+        <h2 class="text-xl font-semibold mb-6">Details</h2>
+        <form id="inviteForm" class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <label class="block">
+              <span class="text-sm text-slate-700">Customer Name</span>
+              <input name="name" required class="field mt-2" placeholder="Jamie"/>
+            </label>
+            <label class="block">
+              <span class="text-sm text-slate-700">Event</span>
+              <input name="event" required class="field mt-2" placeholder="Summer Try-On"/>
+            </label>
           </div>
-        </section>
-      </div>
+
+          <!-- ONE field each: type or choose (datalist) -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <label class="block">
+              <span class="text-sm text-slate-700">Tone (type or choose)</span>
+              <input name="tone" list="toneList" class="field mt-2" placeholder="Warm & Polished"/>
+              <datalist id="toneList">
+                <option value="Warm & Polished"></option>
+                <option value="Playful & Fun"></option>
+                <option value="Elevated & Elegant"></option>
+                <option value="Casual & Friendly"></option>
+                <option value="Luxe Concierge"></option>
+                <option value="Minimal & Modern"></option>
+                <option value="Bold & Joyful"></option>
+                <option value="Romantic & Chic"></option>
+                <option value="Laid-Back & Conversational"></option>
+                <option value="VIP Personal Stylist"></option>
+              </datalist>
+            </label>
+
+            <label class="block">
+              <span class="text-sm text-slate-700">Collection (type or choose)</span>
+              <input name="collection" list="collectionList" class="field mt-2" placeholder="Summer Edit"/>
+              <datalist id="collectionList">
+                <option value="Spring Edit"></option>
+                <option value="Summer Edit"></option>
+                <option value="Fall Edit"></option>
+                <option value="Holiday Edit"></option>
+                <option value="Just In"></option>
+                <option value="Everyday Essentials"></option>
+              </datalist>
+            </label>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <label class="block">
+              <span class="text-sm text-slate-700">Stylist Name</span>
+              <input name="stylist" class="field mt-2" placeholder="Your Cabi Stylist"/>
+            </label>
+            <label class="block">
+              <span class="text-sm text-slate-700">Style Interests (optional)</span>
+              <input name="style_interest" class="field mt-2" placeholder="versatile pieces, polished essentials, week-to-weekend ease"/>
+            </label>
+          </div>
+
+          <button class="w-full mt-2 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white text-lg font-medium px-5 py-4 transition">
+            Generate Invitation
+          </button>
+        </form>
+      </section>
+
+      <!-- Output -->
+      <section class="card p-8">
+        <h2 class="text-xl font-semibold mb-6">Result</h2>
+        <div id="status" class="text-sm text-slate-600 mb-3">Fill the form and click Generate.</div>
+        <pre id="output" class="mono whitespace-pre-wrap bg-slate-50 rounded-xl p-5 min-h-[360px] ring-1 ring-slate-200 text-[0.98rem]"></pre>
+        <div class="flex flex-wrap gap-4 mt-5">
+          <button id="copyAll" class="rounded-xl bg-white hover:bg-slate-50 px-5 py-2.5 ring-1 ring-slate-200">Copy All</button>
+          <button id="copySubject" class="rounded-xl bg-white hover:bg-slate-50 px-5 py-2.5 ring-1 ring-slate-200">Copy Subject</button>
+          <button id="copyBody" class="rounded-xl bg-white hover:bg-slate-50 px-5 py-2.5 ring-1 ring-slate-200">Copy Body</button>
+        </div>
+      </section>
     </div>
   </main>
 

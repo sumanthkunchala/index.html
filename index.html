@@ -6,38 +6,44 @@
   <title>Cabi Invitation Studio</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* Subtle clothing cues: stitch borders + tag shadow */
-    .stitch {
-      border: 2px dashed #e5e7eb; /* light gray "stitch" */
-      border-radius: 16px;
+    /* Subtle white-fabric weave background (very light crosshatch) */
+    body {
+      background:
+        repeating-linear-gradient(45deg, rgba(0,0,0,0.022) 0 2px, transparent 2px 10px),
+        repeating-linear-gradient(-45deg, rgba(0,0,0,0.018) 0 1px, transparent 1px 9px),
+        #ffffff;
+      background-attachment: fixed;
     }
-    .tag {
-      border: 1px solid #e5e7eb;
-      border-radius: 16px;
-      box-shadow: 0 6px 24px rgba(15, 23, 42, 0.06);
+    /* Card styling */
+    .card {
       background: #ffffff;
+      border-radius: 16px;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 8px 30px rgba(17, 24, 39, 0.06);
     }
-    .hanger {
-      width: 28px; height: 18px;
-      display: inline-block; vertical-align: middle;
-      margin-right: 10px;
+    /* Stitch line wrapper */
+    .stitch {
+      border: 2px dashed #e5e7eb;
+      border-radius: 18px;
     }
     .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
-    body { background: #ffffff; } /* plain white background */
+    .field { background: #fff; }
   </style>
 </head>
-<body class="text-slate-800 selection:bg-indigo-100 selection:text-indigo-900">
+<body class="text-slate-800">
   <header class="max-w-5xl mx-auto px-4 md:px-6 pt-8 pb-4">
     <div class="flex items-center gap-3">
-      <!-- Minimal hanger icon (inline SVG) -->
-      <svg class="hanger text-slate-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <!-- Minimal hanger icon -->
+      <svg width="28" height="18" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
+           class="text-slate-700" aria-hidden="true">
         <path d="M12 3a3 3 0 0 1 3 3c0 1.5-1 2-2.1 2.6-.6.3-.9.8-.9 1.4v.5" />
         <path d="M3.5 18.5 12 13l8.5 5.5" />
         <path d="M4 19h16" />
       </svg>
       <div>
         <h1 class="text-2xl md:text-3xl font-semibold tracking-tight">Cabi Invitation Studio</h1>
-        <p class="text-slate-500 mt-1">Simple, polished, and on brand — with free-text tone & collection overrides.</p>
+        <p class="text-slate-600 mt-1">Type your own tone & collection or pick a suggestion from the same box.</p>
       </div>
     </div>
   </header>
@@ -46,72 +52,61 @@
     <div class="stitch p-4 md:p-6">
       <div class="grid md:grid-cols-2 gap-6">
         <!-- Form -->
-        <section class="tag p-6">
+        <section class="card p-6">
           <h2 class="text-lg font-semibold mb-4">Details</h2>
           <form id="inviteForm" class="space-y-4">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
               <label class="block">
                 <span class="text-sm text-slate-600">Customer Name</span>
-                <input name="name" required class="mt-1 w-full rounded-lg bg-white text-slate-900 px-3 py-2 ring-1 ring-slate-200 focus:ring-2 focus:ring-indigo-400 outline-none" placeholder="Jamie"/>
+                <input name="name" required class="field mt-1 w-full rounded-lg text-slate-900 px-3 py-2 ring-1 ring-slate-200 focus:ring-2 focus:ring-slate-900 outline-none" placeholder="Jamie"/>
               </label>
               <label class="block">
                 <span class="text-sm text-slate-600">Event</span>
-                <input name="event" required class="mt-1 w-full rounded-lg bg-white text-slate-900 px-3 py-2 ring-1 ring-slate-200 focus:ring-2 focus:ring-indigo-400 outline-none" placeholder="Summer Try-On"/>
+                <input name="event" required class="field mt-1 w-full rounded-lg text-slate-900 px-3 py-2 ring-1 ring-slate-200 focus:ring-2 focus:ring-slate-900 outline-none" placeholder="Summer Try-On"/>
               </label>
             </div>
 
-            <!-- Tone -->
+            <!-- ONE field each: type or choose (datalist) -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
               <label class="block">
-                <span class="text-sm text-slate-600">Tone (dropdown)</span>
-                <select name="tone" class="mt-1 w-full rounded-lg bg-white text-slate-900 px-3 py-2 ring-1 ring-slate-200 focus:ring-2 focus:ring-indigo-400 outline-none">
-                  <option value="">— Select —</option>
-                  <option>Warm & Polished</option>
-                  <option>Playful & Fun</option>
-                  <option>Elevated & Elegant</option>
-                  <option>Casual & Friendly</option>
-                  <option>Luxe Concierge</option>
-                  <option>Minimal & Modern</option>
-                  <option>Bold & Joyful</option>
-                  <option>Romantic & Chic</option>
-                  <option>Laid-Back & Conversational</option>
-                  <option>VIP Personal Stylist</option>
-                </select>
+                <span class="text-sm text-slate-600">Tone (type or choose)</span>
+                <input name="tone" list="toneList" class="field mt-1 w-full rounded-lg text-slate-900 px-3 py-2 ring-1 ring-slate-200 focus:ring-2 focus:ring-slate-900 outline-none" placeholder="Warm & Polished"/>
+                <datalist id="toneList">
+                  <option value="Warm & Polished"></option>
+                  <option value="Playful & Fun"></option>
+                  <option value="Elevated & Elegant"></option>
+                  <option value="Casual & Friendly"></option>
+                  <option value="Luxe Concierge"></option>
+                  <option value="Minimal & Modern"></option>
+                  <option value="Bold & Joyful"></option>
+                  <option value="Romantic & Chic"></option>
+                  <option value="Laid-Back & Conversational"></option>
+                  <option value="VIP Personal Stylist"></option>
+                </datalist>
               </label>
-              <label class="block">
-                <span class="text-sm text-slate-600">Custom Tone (overrides dropdown)</span>
-                <input name="tone_text" class="mt-1 w-full rounded-lg bg-white text-slate-900 px-3 py-2 ring-1 ring-slate-200 focus:ring-2 focus:ring-indigo-400 outline-none" placeholder="Effortless luxury with a friendly touch"/>
-              </label>
-            </div>
 
-            <!-- Collection -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
               <label class="block">
-                <span class="text-sm text-slate-600">Collection (dropdown)</span>
-                <select name="collection" class="mt-1 w-full rounded-lg bg-white text-slate-900 px-3 py-2 ring-1 ring-slate-200 focus:ring-2 focus:ring-indigo-400 outline-none">
-                  <option value="">— Select —</option>
-                  <option>Spring Edit</option>
-                  <option>Summer Edit</option>
-                  <option>Fall Edit</option>
-                  <option>Holiday Edit</option>
-                  <option>Just In</option>
-                  <option>Everyday Essentials</option>
-                </select>
-              </label>
-              <label class="block">
-                <span class="text-sm text-slate-600">Custom Collection (overrides dropdown)</span>
-                <input name="collection_text" class="mt-1 w-full rounded-lg bg-white text-slate-900 px-3 py-2 ring-1 ring-slate-200 focus:ring-2 focus:ring-indigo-400 outline-none" placeholder="Resort Capsule"/>
+                <span class="text-sm text-slate-600">Collection (type or choose)</span>
+                <input name="collection" list="collectionList" class="field mt-1 w-full rounded-lg text-slate-900 px-3 py-2 ring-1 ring-slate-200 focus:ring-2 focus:ring-slate-900 outline-none" placeholder="Summer Edit"/>
+                <datalist id="collectionList">
+                  <option value="Spring Edit"></option>
+                  <option value="Summer Edit"></option>
+                  <option value="Fall Edit"></option>
+                  <option value="Holiday Edit"></option>
+                  <option value="Just In"></option>
+                  <option value="Everyday Essentials"></option>
+                </datalist>
               </label>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
               <label class="block">
                 <span class="text-sm text-slate-600">Stylist Name</span>
-                <input name="stylist" class="mt-1 w-full rounded-lg bg-white text-slate-900 px-3 py-2 ring-1 ring-slate-200 focus:ring-2 focus:ring-indigo-400 outline-none" placeholder="Your Cabi Stylist"/>
+                <input name="stylist" class="field mt-1 w-full rounded-lg text-slate-900 px-3 py-2 ring-1 ring-slate-200 focus:ring-2 focus:ring-slate-900 outline-none" placeholder="Your Cabi Stylist"/>
               </label>
               <label class="block">
                 <span class="text-sm text-slate-600">Style Interests (optional)</span>
-                <input name="style_interest" class="mt-1 w-full rounded-lg bg-white text-slate-900 px-3 py-2 ring-1 ring-slate-200 focus:ring-2 focus:ring-indigo-400 outline-none" placeholder="versatile pieces, polished essentials, week-to-weekend ease"/>
+                <input name="style_interest" class="field mt-1 w-full rounded-lg text-slate-900 px-3 py-2 ring-1 ring-slate-200 focus:ring-2 focus:ring-slate-900 outline-none" placeholder="versatile pieces, polished essentials, week-to-weekend ease"/>
               </label>
             </div>
 
@@ -122,7 +117,7 @@
         </section>
 
         <!-- Output -->
-        <section class="tag p-6">
+        <section class="card p-6">
           <h2 class="text-lg font-semibold mb-4">Result</h2>
           <div id="status" class="text-sm text-slate-500 mb-3">Fill the form and click Generate.</div>
           <pre id="output" class="mono whitespace-pre-wrap bg-slate-50 rounded-lg p-4 min-h-[240px] ring-1 ring-slate-200"></pre>
@@ -137,7 +132,7 @@
   </main>
 
   <footer class="max-w-5xl mx-auto px-4 md:px-6 pb-10 text-slate-500 text-sm">
-    <p>Tip: “Custom Tone” and “Custom Collection” override the dropdowns.</p>
+    <p>Tip: Start typing to define your own tone or collection, or choose a suggestion.</p>
   </footer>
 
   <script>

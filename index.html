@@ -1,159 +1,198 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Cabi Invitation</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Cabi Invitation Studio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    :root { --bg:#fff; --text:#111; --muted:#6b7280; --card:#f6f7f9; --border:#e5e7eb; }
-    body { font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; color:var(--text);
-           background:var(--bg); max-width:780px; margin:2rem auto; padding:0 1rem; }
-    h1 { margin:0 0 1rem 0; font-weight:700; }
-    .card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:1rem; }
-    label { display:block; margin:.75rem 0 .25rem; font-weight:600; }
-    input, select, button {
-      width:100%; padding:.65rem .75rem; border:1px solid #d1d5db; border-radius:10px; font:inherit; box-sizing:border-box;
+    /* Subtle clothing cues: stitch borders + tag shadow */
+    .stitch {
+      border: 2px dashed #e5e7eb; /* light gray "stitch" */
+      border-radius: 16px;
     }
-    input:focus, select:focus, button:focus { outline:2px solid #111; outline-offset:2px; }
-    .row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-    .actions { display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.75rem; }
-    button { cursor:pointer; background:#111; color:#fff; border:none; }
-    button.secondary { background:#e5e7eb; color:#111; }
-    pre { white-space:pre-wrap; background:#fff; border:1px solid var(--border); border-radius:10px; padding:1rem; min-height:9rem; }
-    .muted { color:var(--muted); font-size:.9rem; }
+    .tag {
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      box-shadow: 0 6px 24px rgba(15, 23, 42, 0.06);
+      background: #ffffff;
+    }
+    .hanger {
+      width: 28px; height: 18px;
+      display: inline-block; vertical-align: middle;
+      margin-right: 10px;
+    }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+    body { background: #ffffff; } /* plain white background */
   </style>
 </head>
-<body>
-  <h1>Cabi Invitation</h1>
-
-  <div class="card">
-    <form id="f">
-      <div class="row">
-        <div>
-          <label>Customer name</label>
-          <input id="name" placeholder="Guest’s name" required />
-        </div>
-        <div>
-          <label>Event</label>
-          <input id="event" placeholder="Katie's House Soirée" required />
-        </div>
+<body class="text-slate-800 selection:bg-indigo-100 selection:text-indigo-900">
+  <header class="max-w-5xl mx-auto px-4 md:px-6 pt-8 pb-4">
+    <div class="flex items-center gap-3">
+      <!-- Minimal hanger icon (inline SVG) -->
+      <svg class="hanger text-slate-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 3a3 3 0 0 1 3 3c0 1.5-1 2-2.1 2.6-.6.3-.9.8-.9 1.4v.5" />
+        <path d="M3.5 18.5 12 13l8.5 5.5" />
+        <path d="M4 19h16" />
+      </svg>
+      <div>
+        <h1 class="text-2xl md:text-3xl font-semibold tracking-tight">Cabi Invitation Studio</h1>
+        <p class="text-slate-500 mt-1">Simple, polished, and on brand — with free-text tone & collection overrides.</p>
       </div>
+    </div>
+  </header>
 
-      <div class="row">
-        <div>
-          <label>Tone</label>
-          <select id="tone">
-            <option>Warm & Polished</option><option>Playful & Fun</option><option>Elevated & Elegant</option>
-            <option>Casual & Friendly</option><option>Luxe Concierge</option><option>Minimal & Modern</option>
-            <option>Bold & Joyful</option><option>Romantic & Chic</option><option>Laid-Back & Conversational</option>
-            <option>VIP Personal Stylist</option>
-          </select>
-        </div>
-        <div>
-          <label>Collection (optional)</label>
-          <select id="collection">
-            <option value="">(none)</option><option>Spring Edit</option><option>Summer Edit</option>
-            <option>Fall Edit</option><option>Holiday Edit</option><option>Just In</option>
-            <option>Everyday Essentials</option>
-          </select>
-        </div>
+  <main class="max-w-5xl mx-auto px-4 md:px-6 pb-16">
+    <div class="stitch p-4 md:p-6">
+      <div class="grid md:grid-cols-2 gap-6">
+        <!-- Form -->
+        <section class="tag p-6">
+          <h2 class="text-lg font-semibold mb-4">Details</h2>
+          <form id="inviteForm" class="space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <label class="block">
+                <span class="text-sm text-slate-600">Customer Name</span>
+                <input name="name" required class="mt-1 w-full rounded-lg bg-white text-slate-900 px-3 py-2 ring-1 ring-slate-200 focus:ring-2 focus:ring-indigo-400 outline-none" placeholder="Jamie"/>
+              </label>
+              <label class="block">
+                <span class="text-sm text-slate-600">Event</span>
+                <input name="event" required class="mt-1 w-full rounded-lg bg-white text-slate-900 px-3 py-2 ring-1 ring-slate-200 focus:ring-2 focus:ring-indigo-400 outline-none" placeholder="Summer Try-On"/>
+              </label>
+            </div>
+
+            <!-- Tone -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <label class="block">
+                <span class="text-sm text-slate-600">Tone (dropdown)</span>
+                <select name="tone" class="mt-1 w-full rounded-lg bg-white text-slate-900 px-3 py-2 ring-1 ring-slate-200 focus:ring-2 focus:ring-indigo-400 outline-none">
+                  <option value="">— Select —</option>
+                  <option>Warm & Polished</option>
+                  <option>Playful & Fun</option>
+                  <option>Elevated & Elegant</option>
+                  <option>Casual & Friendly</option>
+                  <option>Luxe Concierge</option>
+                  <option>Minimal & Modern</option>
+                  <option>Bold & Joyful</option>
+                  <option>Romantic & Chic</option>
+                  <option>Laid-Back & Conversational</option>
+                  <option>VIP Personal Stylist</option>
+                </select>
+              </label>
+              <label class="block">
+                <span class="text-sm text-slate-600">Custom Tone (overrides dropdown)</span>
+                <input name="tone_text" class="mt-1 w-full rounded-lg bg-white text-slate-900 px-3 py-2 ring-1 ring-slate-200 focus:ring-2 focus:ring-indigo-400 outline-none" placeholder="Effortless luxury with a friendly touch"/>
+              </label>
+            </div>
+
+            <!-- Collection -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <label class="block">
+                <span class="text-sm text-slate-600">Collection (dropdown)</span>
+                <select name="collection" class="mt-1 w-full rounded-lg bg-white text-slate-900 px-3 py-2 ring-1 ring-slate-200 focus:ring-2 focus:ring-indigo-400 outline-none">
+                  <option value="">— Select —</option>
+                  <option>Spring Edit</option>
+                  <option>Summer Edit</option>
+                  <option>Fall Edit</option>
+                  <option>Holiday Edit</option>
+                  <option>Just In</option>
+                  <option>Everyday Essentials</option>
+                </select>
+              </label>
+              <label class="block">
+                <span class="text-sm text-slate-600">Custom Collection (overrides dropdown)</span>
+                <input name="collection_text" class="mt-1 w-full rounded-lg bg-white text-slate-900 px-3 py-2 ring-1 ring-slate-200 focus:ring-2 focus:ring-indigo-400 outline-none" placeholder="Resort Capsule"/>
+              </label>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <label class="block">
+                <span class="text-sm text-slate-600">Stylist Name</span>
+                <input name="stylist" class="mt-1 w-full rounded-lg bg-white text-slate-900 px-3 py-2 ring-1 ring-slate-200 focus:ring-2 focus:ring-indigo-400 outline-none" placeholder="Your Cabi Stylist"/>
+              </label>
+              <label class="block">
+                <span class="text-sm text-slate-600">Style Interests (optional)</span>
+                <input name="style_interest" class="mt-1 w-full rounded-lg bg-white text-slate-900 px-3 py-2 ring-1 ring-slate-200 focus:ring-2 focus:ring-indigo-400 outline-none" placeholder="versatile pieces, polished essentials, week-to-weekend ease"/>
+              </label>
+            </div>
+
+            <button class="w-full mt-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-medium px-4 py-3 transition">
+              Generate Invitation
+            </button>
+          </form>
+        </section>
+
+        <!-- Output -->
+        <section class="tag p-6">
+          <h2 class="text-lg font-semibold mb-4">Result</h2>
+          <div id="status" class="text-sm text-slate-500 mb-3">Fill the form and click Generate.</div>
+          <pre id="output" class="mono whitespace-pre-wrap bg-slate-50 rounded-lg p-4 min-h-[240px] ring-1 ring-slate-200"></pre>
+          <div class="flex flex-wrap gap-3 mt-4">
+            <button id="copyAll" class="rounded-lg bg-white hover:bg-slate-50 px-4 py-2 ring-1 ring-slate-200">Copy All</button>
+            <button id="copySubject" class="rounded-lg bg-white hover:bg-slate-50 px-4 py-2 ring-1 ring-slate-200">Copy Subject</button>
+            <button id="copyBody" class="rounded-lg bg-white hover:bg-slate-50 px-4 py-2 ring-1 ring-slate-200">Copy Body</button>
+          </div>
+        </section>
       </div>
+    </div>
+  </main>
 
-      <label>Sign-off</label>
-      <input id="stylist" value="Your Cabi Stylist" />
-
-      <div class="actions">
-        <button id="generateBtn" type="submit">Cabify</button>
-        <button id="copyBtn" class="secondary" type="button">Copy</button>
-        <button id="downloadBtn" class="secondary" type="button">Download .txt</button>
-        <button id="emailBtn" class="secondary" type="button">Email draft</button>
-      </div>
-
-      <p class="muted">Tip: Curate distinct tones and collection narratives for elevated, varied language.</p>
-    </form>
-  </div>
-
-  <h3>Result</h3>
-  <pre id="out">—</pre>
+  <footer class="max-w-5xl mx-auto px-4 md:px-6 pb-10 text-slate-500 text-sm">
+    <p>Tip: “Custom Tone” and “Custom Collection” override the dropdowns.</p>
+  </footer>
 
   <script>
-    // TODO: paste your live Pipedream webhook URL here:
-    const PD_URL = "https://eocb0l4zskm1aad.m.pipedream.net";
+    const FORM = document.getElementById('inviteForm');
+    const OUT  = document.getElementById('output');
+    const ST   = document.getElementById('status');
 
-    const f = document.getElementById("f");
-    const out = document.getElementById("out");
-    const generateBtn = document.getElementById("generateBtn");
-    const copyBtn = document.getElementById("copyBtn");
-    const downloadBtn = document.getElementById("downloadBtn");
-    const emailBtn = document.getElementById("emailBtn");
+    // Replace with your Pipedream HTTP endpoint
+    const ENDPOINT = "PIPEDREAM_URL_HERE";
 
-    f.addEventListener("submit", async (e) => {
+    FORM.addEventListener('submit', async (e) => {
       e.preventDefault();
-
-      const payload = {
-        name: document.getElementById("name").value.trim(),
-        event: document.getElementById("event").value.trim(),
-        tone: document.getElementById("tone").value,
-        collection: document.getElementById("collection").value || null,
-        stylist: document.getElementById("stylist").value.trim() || "Your Cabi Stylist"
-      };
-      if (!payload.name || !payload.event) {
-        out.textContent = "Please fill in Name and Event.";
-        return;
-      }
+      ST.textContent = "Generating…";
+      OUT.textContent = "";
+      const form = new FormData(FORM);
+      const payload = Object.fromEntries(form.entries());
 
       try {
-        generateBtn.disabled = true;
-        generateBtn.textContent = "Generating…";
-        out.textContent = "Generating…";
-
-        const r = await fetch(PD_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+        const res = await fetch(ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
-
-        const text = await r.text();   // read as text first (helps debug non-JSON)
-        let data;
-        try { data = JSON.parse(text); }
-        catch (err) { throw new Error("Expected JSON, got:\n" + text.slice(0, 400)); }
-
-        out.textContent = data.invitation || JSON.stringify(data, null, 2);
+        const data = await res.json();
+        if (data.error) {
+          ST.textContent = "Error";
+          OUT.textContent = data.error;
+        } else {
+          ST.textContent = "Done";
+          OUT.textContent = data.invitation || JSON.stringify(data, null, 2);
+        }
       } catch (err) {
-        out.textContent = "Error: " + err.message + "\nCheck Pipedream response and CORS headers.";
-      } finally {
-        generateBtn.disabled = false;
-        generateBtn.textContent = "Generate";
+        ST.textContent = "Network error";
+        OUT.textContent = String(err);
       }
     });
 
-    copyBtn.addEventListener("click", async () => {
-      try {
-        await navigator.clipboard.writeText(out.textContent || "");
-        copyBtn.textContent = "Copied!";
-        setTimeout(() => (copyBtn.textContent = "Copy"), 900);
-      } catch { /* ignore */ }
-    });
+    function copy(text) {
+      if (!text) return;
+      navigator.clipboard.writeText(text).then(() => {
+        ST.textContent = "Copied!";
+        setTimeout(() => ST.textContent = "Ready", 900);
+      });
+    }
 
-    downloadBtn.addEventListener("click", () => {
-      const blob = new Blob([out.textContent || ""], { type: "text/plain" });
-      const url = (window.URL || window.webkitURL).createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "cabi_invitation.txt";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setTimeout(() => (window.URL || window.webkitURL).revokeObjectURL(url), 500);
-    });
-
-    emailBtn.addEventListener("click", () => {
-      const full = out.textContent || "";
-      const first = (full.split("\n")[0] || "").replace(/^Subject:\s*/i,"").trim();
-      const subject = encodeURIComponent(first || "Cabi Invitation");
-      const body = encodeURIComponent(full);
-      window.location.href = `mailto:?subject=${subject}&body=${body}`;
-    });
+    document.getElementById('copyAll').onclick = () => copy(OUT.textContent || "");
+    document.getElementById('copySubject').onclick = () => {
+      const m = (OUT.textContent || "").match(/^Subject:\s*(.+)$/m);
+      copy(m ? m[1] : "");
+    };
+    document.getElementById('copyBody').onclick = () => {
+      const lines = (OUT.textContent || "").split("\n");
+      const iStart = lines.findIndex(l => l.startsWith("Subject:")) + 2;
+      copy(lines.slice(iStart, iStart + 4).join("\n"));
+    };
   </script>
 </body>
 </html>

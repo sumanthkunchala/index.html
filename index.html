@@ -168,14 +168,13 @@
     if (qp) ENDPOINT = qp;
   } catch {}
 
- function requireEndpoint() {
-   if (!ENDPOINT) {
-     ST.textContent = "Missing endpoint.";
-     return false;
-   }
-   return true;
- }
-
+  function requireEndpoint() {
+    if (!ENDPOINT) {
+      ST.textContent = "Missing endpoint.";
+      return false;
+    }
+    return true;
+  }
 
   FORM.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -259,15 +258,20 @@
       setTimeout(() => ST.textContent = "Ready", 900);
     });
   }
+
   document.getElementById('copyAll').onclick = () => copy(OUT.textContent || "");
+
   document.getElementById('copySubject').onclick = () => {
     const m = (OUT.textContent || "").match(/^Subject:\s*(.+)$/m);
-    copy(m ? m[1] : "");
+    copy(m ? m[1].trim() : "");
   };
+
+  // SAFE fallback if "Subject:" line is missing
   document.getElementById('copyBody').onclick = () => {
-    const lines = (OUT.textContent || "").split("\n");
-    const iStart = lines.findIndex(l => l.startsWith("Subject:")) + 2;
-    copy(lines.slice(iStart).join("\n"));
+    const text = OUT.textContent || "";
+    // Capture everything after the first blank line following the Subject
+    const m = text.match(/^Subject:.*?\n\n([\s\S]*)$/);
+    copy(m ? m[1].trim() : text.trim());
   };
 </script>
 </body>

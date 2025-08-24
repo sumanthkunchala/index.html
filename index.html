@@ -161,64 +161,90 @@
     <p>Type your own tone/collection or pick from suggestions. The Everything Box can include all details in one place.</p>
   </footer>
 
-  <script>
-    const FORM = document.getElementById('inviteForm');
-    const OUT  = document.getElementById('output');
-    const ST   = document.getElementById('status');
+<script>
+  const FORM = document.getElementById('inviteForm');
+  const OUT  = document.getElementById('output');
+  const ST   = document.getElementById('status');
+  const ENDPOINT = "PIPEDREAM_URL_HERE";
 
-    // Replace with your Pipedream HTTP endpoint
-    const ENDPOINT = "https://eo8jd6zy8myq6dm.m.pipedream.net";
+  FORM.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    ST.textContent = "Generating…";
+    OUT.textContent = "";
 
-    FORM.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      ST.textContent = "Generating…";
-      OUT.textContent = "";
-      const form = new FormData(FORM);
-      const payload = Object.fromEntries(form.entries());
+    const form = new FormData(FORM);
+    const payload = Object.fromEntries(form.entries());
 
-      try {
-        const res = await fetch(ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        const data = await res.json();
-        // Fallback: if backend ever returns only {subject, body}, build the pretty text
-        if (!data.invitation && data.subject && data.body) {
-            data.invitation = `Subject: ${data.subject}\n\n${data.body}`;  // 1 invite, no "Body:" label
-         }
-
-        if (data.error) {
-          ST.textContent = "Error";
-          OUT.textContent = data.error;
-        } else {
-          ST.textContent = "Done";
-          OUT.textContent = data.invitation || JSON.stringify(data, null, 2);
-        }
-      } catch (err) {
-        ST.textContent = "Network error";
-        OUT.textContent = String(err);
-      }
-    });
-
-    function copy(text) {
-      if (!text) return;
-      navigator.clipboard.writeText(text).then(() => {
-        ST.textContent = "Copied!";
-        setTimeout(() => ST.textContent = "Ready", 900);
+    try {
+      const res  = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
       });
-    }
 
-    document.getElementById('copyAll').onclick = () => copy(OUT.textContent || "");
-    document.getElementById('copySubject').onclick = () => {
-      const m = (OUT.textContent || "").match(/^Subject:\s*(.+)$/m);
-      copy(m ? m[1] : "");
-    };
-    document.getElementById('copyBody').onclick = () => {
-      const lines = (OUT.textContent || "").split("\n");
-      const iStart = lines.findIndex(l => l.startsWith("Subject:")) + 2;
-      copy(lines.slice(iStart, iStart + 4).join("\n"));
-    };
-  </script>
+      // Read as text first (handles non-JSON responses too)
+      const raw  = await res.text();
+      let data   = {};
+      try { data = JSON.parse(raw); } catch { /* leave data = {} */ }
+
+      // Build a clean invite string no matter what the backend returns
+      let invite = "";
+
+      // 1) Preferred: backend already gives invitation string
+      if (data && typeof data.invitation === "string" && data.invitation.trim()) {
+        invite = data.invitation.trim();
+      }
+      // 2) Fallback: backend only sent subject/body fields
+      else if (data && typeof data.subject === "string" && typeof data.body === "string") {
+        invite = `Subject: ${data.subject.trim()}\n\n${data.body.trim()}`;
+      }
+      // 3) Salvage: backend returned raw JSON text with { "subject": "...", "body": "..." }
+      else {
+        const subMatch  = raw.match(/"subject"\s*:\s*"([^"]+)"/i);
+        const bodyMatch = raw.match(/"body"\s*:\s*"([\s\S]*?)"\s*[,}]/i);
+        if (subMatch && bodyMatch) {
+          // Unescape simple quotes in body
+          const sub  = subMatch[1];
+          const body = bodyMatch[1].replace(/\\"/g, '"');
+          invite = `Subject: ${sub}\n\n${body}`;
+        }
+      }
+
+      if (invite) {
+        ST.textContent = "Done";
+        OUT.textContent = invite;            // << no braces, always pretty text
+      } else if (data && data.error) {
+        ST.textContent = "Error";
+        OUT.textContent = data.error;
+      } else {
+        ST.textContent = "Unexpected response";
+        OUT.textContent = raw;
+      }
+
+    } catch (err) {
+      ST.textContent = "Network error";
+      OUT.textContent = String(err);
+    }
+  });
+
+  // copy helpers unchanged
+  function copy(text) {
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(() => {
+      ST.textContent = "Copied!";
+      setTimeout(() => ST.textContent = "Ready", 900);
+    });
+  }
+  document.getElementById('copyAll').onclick = () => copy(OUT.textContent || "");
+  document.getElementById('copySubject').onclick = () => {
+    const m = (OUT.textContent || "").match(/^Subject:\s*(.+)$/m);
+    copy(m ? m[1] : "");
+  };
+  document.getElementById('copyBody').onclick = () => {
+    const lines = (OUT.textContent || "").split("\n");
+    const iStart = lines.findIndex(l => l.startsWith("Subject:")) + 2;
+    copy(lines.slice(iStart).join("\n"));
+  };
+</script>
 </body>
 </html>

@@ -183,6 +183,11 @@
           body: JSON.stringify(payload)
         });
         const data = await res.json();
+        // Fallback: if backend ever returns only {subject, body}, build the pretty text
+        if (!data.invitation && data.subject && data.body) {
+            data.invitation = `Subject: ${data.subject}\n\n${data.body}`;  // 1 invite, no "Body:" label
+         }
+
         if (data.error) {
           ST.textContent = "Error";
           OUT.textContent = data.error;

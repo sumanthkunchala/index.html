@@ -51,7 +51,7 @@
       </svg>
       <div>
         <h1 class="text-3xl md:text-4xl font-semibold tracking-tight">Cabi Invitation Studio</h1>
-        <p class="text-slate-600 mt-2 text-lg">Type your tone & collection or choose a suggestion in the box.</p>
+        <p class="text-slate-600 mt-2 text-lg">Type your tone & collection or choose a suggestion in the same box.</p>
       </div>
     </div>
   </header>
@@ -64,19 +64,19 @@
         <form id="inviteForm" class="space-y-6">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <label class="block">
-              <span class="text-sm text-slate-700">Guest Name</span>
-              <input name="name" required class="field mt-2" placeholder="Katie"/>
+              <span class="text-sm text-slate-700">Customer Name</span>
+              <input name="name" class="field mt-2" placeholder="Jamie"/>
             </label>
             <label class="block">
               <span class="text-sm text-slate-700">Event</span>
-              <input name="event" required class="field mt-2" placeholder=" pop-up party"/>
+              <input name="event" class="field mt-2" placeholder="Summer Try-On"/>
             </label>
           </div>
 
           <!-- ONE field each: type or choose (datalist) -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <label class="block">
-              <span class="text-sm text-slate-700">Tone</span>
+              <span class="text-sm text-slate-700">Tone (type or choose)</span>
               <input name="tone" list="toneList" class="field mt-2" placeholder="Warm & Polished"/>
               <datalist id="toneList">
                 <option value="Warm & Polished"></option>
@@ -93,7 +93,7 @@
             </label>
 
             <label class="block">
-              <span class="text-sm text-slate-700">Collection</span>
+              <span class="text-sm text-slate-700">Collection (type or choose)</span>
               <input name="collection" list="collectionList" class="field mt-2" placeholder="Summer Edit"/>
               <datalist id="collectionList">
                 <option value="Spring Edit"></option>
@@ -117,6 +117,24 @@
             </label>
           </div>
 
+          <!-- NEW: Big 'Everything' box ABOVE the button -->
+          <div class="space-y-2">
+            <label class="block">
+              <span class="text-sm text-slate-700">Everything Box (optional)</span>
+              <textarea id="brief" name="brief" class="field mt-2" style="min-height: 180px;"
+                placeholder="Type everything here if you prefer:
+name: Jamie
+event: Anya’s Home Styling Night
+tone: Luxe Concierge
+collection: Fall Edit
+stylist: Taylor
+notes: soft layers, warm neutrals, private hostess vibe"></textarea>
+            </label>
+            <p class="text-sm text-slate-500">
+              Tip: Use either the fields above or this box. If both are filled, the box wins.
+            </p>
+          </div>
+
           <button class="w-full mt-2 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white text-lg font-medium px-5 py-4 transition">
             Generate Invitation
           </button>
@@ -126,7 +144,7 @@
       <!-- Output -->
       <section class="card p-8">
         <h2 class="text-xl font-semibold mb-6">Result</h2>
-        <div id="status" class="text-sm text-slate-600 mb-3">Fill the form and click Generate.</div>
+        <div id="status" class="text-sm text-slate-600 mb-3">Fill the form or the box, then click Generate.</div>
         <pre id="output" class="mono whitespace-pre-wrap bg-slate-50 rounded-xl p-5 min-h-[360px] ring-1 ring-slate-200 text-[0.98rem]"></pre>
         <div class="flex flex-wrap gap-4 mt-5">
           <button id="copyAll" class="rounded-xl bg-white hover:bg-slate-50 px-5 py-2.5 ring-1 ring-slate-200">Copy All</button>
@@ -138,7 +156,7 @@
   </main>
 
   <footer class="max-w-6xl mx-auto px-4 md:px-8 pb-10 text-slate-600 text-sm">
-    <p></p>
+    <p>Type your own tone/collection or pick from suggestions. The Everything Box can include all details in one place.</p>
   </footer>
 
   <script>
@@ -147,7 +165,7 @@
     const ST   = document.getElementById('status');
 
     // Replace with your Pipedream HTTP endpoint
-    const ENDPOINT = "https://eocb0l4zskm1aad.m.pipedream.net";
+    const ENDPOINT = "PIPEDREAM_URL_HERE";
 
     FORM.addEventListener('submit', async (e) => {
       e.preventDefault();

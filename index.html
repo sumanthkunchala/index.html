@@ -168,13 +168,14 @@
     if (qp) ENDPOINT = qp;
   } catch {}
 
-  function requireEndpoint() {
-    if (!ENDPOINT || ENDPOINT.includes("https://eo8jd6zy8myq6dm.m.pipedream.net")) {
-      ST.textContent = "Missing endpoint. Paste your Pipedream HTTP trigger URL in the code (ENDPOINT).";
-      return false;
-    }
-    return true;
-  }
+ function requireEndpoint() {
+   if (!ENDPOINT) {
+     ST.textContent = "Missing endpoint.";
+     return false;
+   }
+   return true;
+ }
+
 
   FORM.addEventListener('submit', async (e) => {
     e.preventDefault();

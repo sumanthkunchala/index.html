@@ -3,29 +3,24 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Cabi Invitation Studio</title>
+  <title>cabi Invitation Studio</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* Pure white background, no designs */
     body { background: #ffffff; }
-
-    /* Spacious white cards */
     .card {
       background: #ffffff;
       border-radius: 18px;
       border: 1px solid #e5e7eb;
       box-shadow: 0 10px 36px rgba(17, 24, 39, 0.08);
     }
-
     .mono {
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
     }
-
     .field {
       background: #fff;
-      font-size: 1.05rem;         /* bigger text */
+      font-size: 1.05rem;
       line-height: 1.6;
-      padding: 0.9rem 1rem;       /* bigger padding */
+      padding: 0.9rem 1rem;
       border-radius: 0.75rem;
       border: 1px solid #e5e7eb;
       box-shadow: 0 1px 0 rgba(17,24,39,0.02) inset;
@@ -33,7 +28,7 @@
     }
     .field:focus {
       outline: none;
-      border-color: #0f172a;      /* slate-900 */
+      border-color: #0f172a;
       box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.12);
     }
   </style>
@@ -41,7 +36,6 @@
 <body class="text-slate-800">
   <header class="max-w-6xl mx-auto px-4 md:px-8 pt-10 pb-4">
     <div class="flex items-center gap-4">
-      <!-- Minimal hanger icon -->
       <svg width="32" height="20" viewBox="0 0 24 24" fill="none"
            stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
            class="text-slate-700" aria-hidden="true">
@@ -50,8 +44,8 @@
         <path d="M4 19h16" />
       </svg>
       <div>
-        <h1 class="text-3xl md:text-4xl font-semibold tracking-tight">Cabi Invitation Studio</h1>
-        <p class="text-slate-600 mt-2 text-lg">Type your tone & collection or choose a suggestion in the same box.</p>
+        <h1 class="text-3xl md:text-4xl font-semibold tracking-tight">cabi Invitation Studio</h1>
+        <p class="text-slate-600 mt-2 text-lg">Type your tone & collection or put everything in the box.</p>
       </div>
     </div>
   </header>
@@ -61,23 +55,22 @@
       <!-- Form -->
       <section class="card p-8">
         <h2 class="text-xl font-semibold mb-6">Details</h2>
-        <form id="inviteForm" class="space-y-6">
+        <form id="inviteForm" class="space-y-6" novalidate>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <label class="block">
               <span class="text-sm text-slate-700">Invitee Name</span>
-              <input name="name" class="field mt-2" placeholder="Mary Jane"/>
+              <input name="name" class="field mt-2" placeholder="Mary Jane" autocomplete="off"/>
             </label>
             <label class="block">
               <span class="text-sm text-slate-700">Event</span>
-              <input name="event" class="field mt-2" placeholder="Wardrobe refresh"/>
+              <input name="event" class="field mt-2" placeholder="Wardrobe refresh" autocomplete="off"/>
             </label>
           </div>
 
-          <!-- ONE field each: type or choose (datalist) -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <label class="block">
               <span class="text-sm text-slate-700">Tone (type or choose)</span>
-              <input name="tone" list="toneList" class="field mt-2" placeholder="Warm & Polished"/>
+              <input name="tone" list="toneList" class="field mt-2" placeholder="Warm & Polished" autocomplete="off"/>
               <datalist id="toneList">
                 <option value="Warm & Polished"></option>
                 <option value="Playful & Fun"></option>
@@ -94,7 +87,7 @@
 
             <label class="block">
               <span class="text-sm text-slate-700">Collection (type or choose)</span>
-              <input name="collection" list="collectionList" class="field mt-2" placeholder="Summer Edit"/>
+              <input name="collection" list="collectionList" class="field mt-2" placeholder="Summer Edit" autocomplete="off"/>
               <datalist id="collectionList">
                 <option value="Spring Edit"></option>
                 <option value="Summer Edit"></option>
@@ -109,15 +102,14 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <label class="block">
               <span class="text-sm text-slate-700">Stylist Name</span>
-              <input name="stylist" class="field mt-2" placeholder="Your Cabi Stylist"/>
+              <input name="stylist" class="field mt-2" placeholder="Your cabi Stylist" autocomplete="off"/>
             </label>
             <label class="block">
               <span class="text-sm text-slate-700">Style Interests (optional)</span>
-              <input name="style_interest" class="field mt-2" placeholder="versatile pieces, polished essentials, week-to-weekend ease"/>
+              <input name="style_interest" class="field mt-2" placeholder="versatile pieces, polished essentials" autocomplete="off"/>
             </label>
           </div>
 
-          <!-- CLEAR OR DIVIDER -->
           <div class="flex items-center gap-3 my-2" aria-hidden="true">
             <div class="h-px flex-1 bg-slate-200"></div>
             <span class="text-xs uppercase tracking-wider text-slate-500">Or</span>
@@ -158,17 +150,36 @@
   </main>
 
   <footer class="max-w-6xl mx-auto px-4 md:px-8 pb-10 text-slate-600 text-sm">
-    <p>Type your own tone/collection or pick from suggestions. The Everything Box can include all details in one place.</p>
+    <p>Use the Everything Box for one-paragraph briefs. The app will expand and format it.</p>
   </footer>
 
 <script>
   const FORM = document.getElementById('inviteForm');
   const OUT  = document.getElementById('output');
   const ST   = document.getElementById('status');
-  const ENDPOINT = "PIPEDREAM_URL_HERE";
+
+  // Replace this with your Pipedream HTTP trigger URL
+  let ENDPOINT = "PIPEDREAM_URL_HERE";
+
+  // Allow ?endpoint=URL override for quick testing
+  try {
+    const u = new URL(location.href);
+    const qp = u.searchParams.get("endpoint");
+    if (qp) ENDPOINT = qp;
+  } catch {}
+
+  function requireEndpoint() {
+    if (!ENDPOINT || ENDPOINT.includes("PIPEDREAM_URL_HERE")) {
+      ST.textContent = "Missing endpoint. Paste your Pipedream HTTP trigger URL in the code (ENDPOINT).";
+      return false;
+    }
+    return true;
+  }
 
   FORM.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (!requireEndpoint()) return;
+
     ST.textContent = "Generating…";
     OUT.textContent = "";
 
@@ -176,49 +187,61 @@
     const payload = Object.fromEntries(form.entries());
 
     try {
-      const res  = await fetch(ENDPOINT, {
+      const res = await fetch(ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        mode: 'cors',
+        cache: 'no-store',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload),
       });
 
-      // Read as text first (handles non-JSON responses too)
-      const raw  = await res.text();
-      let data   = {};
-      try { data = JSON.parse(raw); } catch { /* leave data = {} */ }
+      const raw = await res.text();
+      let data = {};
+      try { data = JSON.parse(raw); } catch { /* not JSON -> maybe HTML (405 page) */ }
 
-      // Build a clean invite string no matter what the backend returns
+      // Handle explicit 405
+      if (res.status === 405) {
+        ST.textContent = "405 Not Allowed";
+        OUT.textContent =
+`Your endpoint rejected POST (405).
+• Make sure you used the Pipedream "HTTP / Webhook" trigger URL (not a display page).
+• The URL should look like https://xxxxx.m.pipedream.net
+• Your backend must accept POST (and OPTIONS for preflight).`;
+        return;
+      }
+
+      // Graceful handling: always render nice "Subject + Body"
       let invite = "";
-
-      // 1) Preferred: backend already gives invitation string
       if (data && typeof data.invitation === "string" && data.invitation.trim()) {
         invite = data.invitation.trim();
-      }
-      // 2) Fallback: backend only sent subject/body fields
-      else if (data && typeof data.subject === "string" && typeof data.body === "string") {
+      } else if (data && typeof data.subject === "string" && typeof data.body === "string") {
         invite = `Subject: ${data.subject.trim()}\n\n${data.body.trim()}`;
-      }
-      // 3) Salvage: backend returned raw JSON text with { "subject": "...", "body": "..." }
-      else {
+      } else {
+        // Salvage from raw JSON-ish or HTML
         const subMatch  = raw.match(/"subject"\s*:\s*"([^"]+)"/i);
         const bodyMatch = raw.match(/"body"\s*:\s*"([\s\S]*?)"\s*[,}]/i);
         if (subMatch && bodyMatch) {
-          // Unescape simple quotes in body
           const sub  = subMatch[1];
           const body = bodyMatch[1].replace(/\\"/g, '"');
           invite = `Subject: ${sub}\n\n${body}`;
+        } else if (/^\s*</.test(raw)) {
+          // Looks like HTML (e.g., 405 page)
+          invite = "";
+          ST.textContent = "Unexpected HTML from server";
+          OUT.textContent = "The server returned an HTML page. Confirm the endpoint is correct and supports POST.";
+          return;
         }
       }
 
       if (invite) {
         ST.textContent = "Done";
-        OUT.textContent = invite;            // << no braces, always pretty text
+        OUT.textContent = invite; // no braces, always pretty
       } else if (data && data.error) {
         ST.textContent = "Error";
-        OUT.textContent = data.error;
+        OUT.textContent = String(data.error);
       } else {
         ST.textContent = "Unexpected response";
-        OUT.textContent = raw;
+        OUT.textContent = raw || "(empty)";
       }
 
     } catch (err) {
@@ -227,7 +250,7 @@
     }
   });
 
-  // copy helpers unchanged
+  // Copy helpers
   function copy(text) {
     if (!text) return;
     navigator.clipboard.writeText(text).then(() => {
